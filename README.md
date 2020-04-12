@@ -1,0 +1,2 @@
+# mydockerrepo
+Docker compatible repo
