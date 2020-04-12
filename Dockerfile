@@ -4,7 +4,7 @@ RUN apt-get update -y
 RUN apt-get install -y apache2
 
 # Install apache and write hello world message
-RUN echo "Hello Cloud Gurus!!!! This web page is running in a Docker container!" > /var/www/index.html
+RUN echo "Hello Folks !!!! This web page is running in a Docker container!" > /var/www/index.html
 
 # Configure apache
 RUN a2enmod rewrite
