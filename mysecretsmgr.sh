@@ -9,24 +9,23 @@ else
     echo "File does not exist"
 fi 
 
-# create the keypair 
-aws ec2 create-key-pair --key-name $mykeypairname --query 'KeyMaterial' --output text >$mykeypairname
-if [ ${#} -eq 0 ]
-    then
-        echo "$mykeypairname created\\n"    
-    else
-        echo "$mykeypairname already exists\\n"  
-        exit 1 # wrong args
+# Check if the key pair already exists or not 
+aws ec2 describe-key-pairs --key-names "$mykeypairname" | grep -i "An error" >/tmp/errchk
+
+if [[ -f /tmp/errchk && -s /tmp/errchk ]]
+then
+    echo "I am here to create key pair" 
+    exit 1
+else
+    echo "File is empty so need to create it"
+    aws ec2 create-key-pair --key-name $mykeypairname --query 'KeyMaterial' --output text >$mykeypairname
+
 fi
+
+# Check if the same secrets manager already exists or not 
+echo "Checking if the same secrets manager already exists or not"
 
 # pass the keypair to secrets manager 
 aws secretsmanager create-secret --name $mysecretsmgr  --description "My secrets manager" --secret-string file://$mykeypairname
-if [ ${#} -eq 0 ]
-    then
-        echo "$mysecretsmgr created\\n"    
-    else
-        echo "$mysecretsmgr already exists\\n"  
-        exit 1 # wrong args
-fi
 
 rm -rf $mykeypairname
