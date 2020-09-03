@@ -1,2 +1,2 @@
-# mydockerrepo - append Jul 20202
+# mydockerrepo - append Jul 2020
 Docker compatible repo
